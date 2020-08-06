@@ -4,6 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+<!--  TODO 还是需要把Netty实现的RPC单独拿出来做一个可扩展的框架  -->
     <groupId>com.wangyao2221</groupId>
     <artifactId>light-rpc</artifactId>
     <packaging>pom</packaging>
@@ -12,9 +13,8 @@
         <module>light-rpc-common</module>
         <module>light-rpc-codec</module>
         <module>light-rpc-proto</module>
-        <module>light-rpc-transport</module>
         <module>light-rpc-server</module>
-        <module>light-prc-client</module>
+        <module>light-rpc-client</module>
         <module>light-rpc-common</module>
         <module>light-rpc-example</module>
     </modules>

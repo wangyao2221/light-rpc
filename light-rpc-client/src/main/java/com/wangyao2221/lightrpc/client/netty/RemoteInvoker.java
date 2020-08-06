@@ -1,19 +1,14 @@
-package com.wangyao2221.lightrpc.client;
+package com.wangyao2221.lightrpc.client.netty;
 
+import com.wangyao2221.lightrpc.client.TransportSelector;
 import com.wangyao2221.lightrpc.proto.Request;
 import com.wangyao2221.lightrpc.proto.Response;
 import com.wangyao2221.lightrpc.proto.ServiceDescriptor;
-import com.wangyao2221.lightrpc.proto.codec.Decoder;
-import com.wangyao2221.lightrpc.proto.codec.Encoder;
-import com.wangyao2221.lightrpc.transport.TransportClient;
+import com.wangyao2221.lightrpc.transport.netty.NettyTransportClient;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.IOUtils;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.util.concurrent.ExecutionException;
 
 /**
  * 调用远程服务的代理类
@@ -24,17 +19,11 @@ import java.lang.reflect.Method;
 @Slf4j
 public class RemoteInvoker implements InvocationHandler {
     private Class clazz;
-    private Encoder encoder;
-    private Decoder decoder;
     private TransportSelector selector;
 
     public RemoteInvoker(Class clazz,
-                         Encoder encoder,
-                         Decoder decoder,
                          TransportSelector selector) {
         this.clazz = clazz;
-        this.encoder = encoder;
-        this.decoder = decoder;
         this.selector = selector;
     }
 
@@ -54,23 +43,15 @@ public class RemoteInvoker implements InvocationHandler {
 
     private Response invokeRemote(Request request) {
         Response response = null;
-        TransportClient client = null;
+        NettyTransportClient client = null;
 
         try {
-            client = selector.select();
-
-            byte[] outBytes = encoder.encode(request);
-            InputStream receive = client.write(new ByteArrayInputStream(outBytes));
-
-            byte[] inBytes = IOUtils.readFully(receive, receive.available());
-            response = decoder.decode(inBytes, Response.class);
-        } catch (IOException e) {
+            client = (NettyTransportClient) selector.select();
+            response = (Response) client.write(request);
+        } catch (InterruptedException e) {
             e.printStackTrace();
-            response = new Response();
-            response.setCode(1);
-            response.setMessage("RpcClient got error:"
-                    + e.getClass()
-                    + " : " + e.getMessage());
+        } catch (ExecutionException e) {
+            e.printStackTrace();
         } finally {
             if (client != null) {
                 selector.release(client);

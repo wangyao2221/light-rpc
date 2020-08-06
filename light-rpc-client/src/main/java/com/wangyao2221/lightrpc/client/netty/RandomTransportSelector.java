@@ -1,6 +1,9 @@
-package com.wangyao2221.lightrpc.client;
+package com.wangyao2221.lightrpc.client.netty;
 
+import com.wangyao2221.lightrpc.client.TransportSelector;
 import com.wangyao2221.lightrpc.proto.Peer;
+import com.wangyao2221.lightrpc.proto.codec.Decoder;
+import com.wangyao2221.lightrpc.proto.codec.Encoder;
 import com.wangyao2221.lightrpc.proto.common.ReflectionUtils;
 import com.wangyao2221.lightrpc.transport.TransportClient;
 import lombok.extern.slf4j.Slf4j;
@@ -25,12 +28,13 @@ public class RandomTransportSelector implements TransportSelector {
     }
 
     @Override
-    public synchronized void init(List<Peer> peers, int count, Class<? extends TransportClient> clazz) {
+    public synchronized void init(List<Peer> peers, int count, Class<? extends TransportClient> clazz, Encoder encoder, Decoder decoder) {
         count = Math.max(count, 1);
 
         for (Peer peer : peers) {
             for (int i = 0; i < count; i++) {
                 TransportClient client = ReflectionUtils.newInstance(clazz);
+                client.init(encoder, decoder);
                 client.connect(peer);
                 clients.add(client);
             }

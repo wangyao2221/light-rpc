@@ -10,6 +10,10 @@ import lombok.Data;
 @Data
 public class Response {
     /**
+     * 请求id，用于客户端获取结果Future
+     */
+    private String requestId;
+    /**
      * 服务返回编码，0-成功，非0失败
      */
     private int code = 0;

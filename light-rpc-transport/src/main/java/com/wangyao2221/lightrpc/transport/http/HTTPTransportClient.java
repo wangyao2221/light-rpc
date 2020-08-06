@@ -1,6 +1,9 @@
-package com.wangyao2221.lightrpc.transport;
+package com.wangyao2221.lightrpc.transport.http;
 
 import com.wangyao2221.lightrpc.proto.Peer;
+import com.wangyao2221.lightrpc.proto.codec.Decoder;
+import com.wangyao2221.lightrpc.proto.codec.Encoder;
+import com.wangyao2221.lightrpc.transport.TransportClient;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
@@ -21,7 +24,11 @@ public class HTTPTransportClient implements TransportClient {
     }
 
     @Override
-    public InputStream write(InputStream data) {
+    public void init(Encoder encoder, Decoder decoder) {
+    }
+
+    @Override
+    public Object write(Object data) {
         try {
             HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
             connection.setDoOutput(true);
@@ -30,7 +37,7 @@ public class HTTPTransportClient implements TransportClient {
             connection.setRequestMethod("POST");
             connection.connect();
 
-            IOUtils.copy(data, connection.getOutputStream());
+            IOUtils.copy((InputStream) data, connection.getOutputStream());
             int resultCode = connection.getResponseCode();
             if (resultCode == HttpURLConnection.HTTP_OK) {
                 return connection.getInputStream();

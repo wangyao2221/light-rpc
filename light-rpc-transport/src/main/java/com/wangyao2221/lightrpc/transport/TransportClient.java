@@ -1,8 +1,11 @@
 package com.wangyao2221.lightrpc.transport;
 
 import com.wangyao2221.lightrpc.proto.Peer;
+import com.wangyao2221.lightrpc.proto.codec.Decoder;
+import com.wangyao2221.lightrpc.proto.codec.Encoder;
 
 import java.io.InputStream;
+import java.util.concurrent.ExecutionException;
 
 /**
  * 1、创建连接
@@ -14,6 +17,7 @@ import java.io.InputStream;
  */
 public interface TransportClient {
     void connect(Peer peer);
-    InputStream write(InputStream data);
+    void init(Encoder encoder, Decoder decoder);
+    Object write(Object data) throws ExecutionException, InterruptedException;
     void close();
 }

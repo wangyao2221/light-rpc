@@ -1,7 +1,6 @@
 package com.wangyao2221.lightrpc.example;
 
-import com.wangyao2221.lightrpc.client.RpcClient;
-import com.wangyao2221.lightrpc.server.RpcServer;
+import com.wangyao2221.lightrpc.server.netty.RpcServer;
 
 /**
  * @author wangyao2221

@@ -1,5 +1,6 @@
-package com.wangyao2221.lightrpc.client;
+package com.wangyao2221.lightrpc.client.netty;
 
+import com.wangyao2221.lightrpc.client.TransportSelector;
 import com.wangyao2221.lightrpc.proto.codec.Decoder;
 import com.wangyao2221.lightrpc.proto.codec.Encoder;
 import com.wangyao2221.lightrpc.proto.common.ReflectionUtils;
@@ -28,7 +29,9 @@ public class RpcClient {
         this.selector.init(
                 this.config.getServers(),
                 this.config.getConnectCount(),
-                this.config.getTransportClass()
+                this.config.getTransportClass(),
+                this.encoder,
+                this.decoder
         );
     }
 
@@ -36,7 +39,7 @@ public class RpcClient {
         return (T) Proxy.newProxyInstance(
                 getClass().getClassLoader(),
                 new Class[]{clazz},
-                new RemoteInvoker(clazz, encoder, decoder, selector)
+                new RemoteInvoker(clazz, selector)
         );
     }
 }

@@ -1,11 +1,11 @@
-package com.wangyao2221.lightrpc.server;
+package com.wangyao2221.lightrpc.server.http;
 
 import com.wangyao2221.lightrpc.proto.codec.Decoder;
 import com.wangyao2221.lightrpc.proto.codec.Encoder;
 import com.wangyao2221.lightrpc.proto.codec.JSONDecoder;
 import com.wangyao2221.lightrpc.proto.codec.JSONEncoder;
-import com.wangyao2221.lightrpc.transport.HTTPTransportServer;
 import com.wangyao2221.lightrpc.transport.TransportServer;
+import com.wangyao2221.lightrpc.transport.http.HTTPTransportServer;
 import lombok.Data;
 
 /**

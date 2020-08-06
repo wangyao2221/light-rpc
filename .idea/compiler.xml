@@ -8,12 +8,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="light-rpc-transport" />
-        <module name="light-prc-client" />
         <module name="light-rpc-server" />
         <module name="light-rpc-common" />
         <module name="light-rpc-example" />
         <module name="light-rpc-codec" />
         <module name="light-rpc-proto" />
+        <module name="light-rpc-client" />
       </profile>
     </annotationProcessing>
   </component>

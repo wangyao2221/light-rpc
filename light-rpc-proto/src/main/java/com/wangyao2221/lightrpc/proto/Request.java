@@ -10,6 +10,10 @@ import lombok.Data;
 
 @Data
 public class Request {
+    /**
+     * 请求id，用于客户端获取结果Future
+     */
+    private String requestId;
     private ServiceDescriptor service;
     private Object[] parameters;
 }
