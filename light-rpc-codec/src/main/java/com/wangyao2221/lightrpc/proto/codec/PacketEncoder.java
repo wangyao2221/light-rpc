@@ -2,7 +2,6 @@ package com.wangyao2221.lightrpc.proto.codec;
 
 import com.wangyao2221.lightrpc.proto.packet.Packet;
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
 import lombok.extern.slf4j.Slf4j;

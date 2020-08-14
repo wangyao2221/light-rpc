@@ -17,6 +17,8 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 import io.netty.handler.codec.MessageToByteEncoder;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -54,9 +56,9 @@ public class NettyTransportClient implements TransportClient {
                     protected void initChannel(NioSocketChannel ch) throws Exception {
                         ch.pipeline()
                                 .addLast(new Spliter())
-                                .addLast((PacketCodecHandler)decoder)
+                                .addLast((ByteToMessageDecoder)decoder)
                                 .addLast(new MethodCallResponseHandler())
-                                .addLast((PacketCodecHandler)encoder);
+                                .addLast((MessageToByteEncoder)encoder);
                     }
                 });
 
@@ -71,12 +73,6 @@ public class NettyTransportClient implements TransportClient {
 
     @Override
     public void init(Encoder encoder, Decoder decoder) {
-//        if (!(encoder instanceof MessageToByteEncoder)) {
-//            throw new IllegalStateException("please provide a MessageToByteEncoder instance");
-//        }
-//        if (!(decoder instanceof ByteToMessageDecoder)) {
-//            throw new IllegalStateException("please provide a ByteToMessageDecoder instance");
-//        }
         this.encoder = encoder;
         this.decoder = decoder;
     }

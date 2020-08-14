@@ -9,7 +9,6 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.ByteToMessageDecoder;
 import io.netty.handler.codec.MessageToByteEncoder;
 
 /**
@@ -23,15 +22,15 @@ public class NettyTransportServer implements TransportServer {
     private Decoder decoder;
 
     public void init(int port, RequestHandler handler, Encoder encoder, Decoder decoder) {
-//        if (!(handler instanceof MethodCallRequestHandler)) {
-//            throw new IllegalStateException("please provide a MethodCallRequestHandler instance");
-//        }
-//        if (!(encoder instanceof MessageToByteEncoder)) {
-//            throw new IllegalStateException("please provide a MessageToByteEncoder instance");
-//        }
-//        if (!(decoder instanceof ByteToMessageDecoder)) {
-//            throw new IllegalStateException("please provide a ByteToMessageDecoder instance");
-//        }
+        if (!(handler instanceof MethodCallRequestHandler)) {
+            throw new IllegalStateException("please provide a MethodCallRequestHandler instance");
+        }
+        if (!(encoder instanceof PacketEncoder)) {
+            throw new IllegalStateException("please provide a PacketEncoder instance");
+        }
+        if (!(decoder instanceof PacketDecoder)) {
+            throw new IllegalStateException("please provide a PacketDecoder instance");
+        }
         init(port, handler);
         this.encoder = encoder;
         this.decoder = decoder;
@@ -59,9 +58,9 @@ public class NettyTransportServer implements TransportServer {
                     protected void initChannel(NioSocketChannel ch) throws Exception {
                         ch.pipeline()
                                 .addLast(new Spliter())
-                                .addLast((PacketCodecHandler)decoder)
+                                .addLast((PacketDecoder)decoder)
                                 .addLast((MethodCallRequestHandler)handler)
-                                .addLast((PacketCodecHandler)encoder);
+                                .addLast((PacketEncoder)encoder);
                     }
                 });
 

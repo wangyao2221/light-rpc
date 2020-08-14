@@ -6,7 +6,6 @@
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/light-rpc-transport/pom.xml" />
-        <option value="$PROJECT_DIR$/light-rpc-client/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
